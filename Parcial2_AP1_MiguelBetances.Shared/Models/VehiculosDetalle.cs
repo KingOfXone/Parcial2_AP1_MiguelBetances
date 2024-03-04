@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Parcial2_AP1_MiguelBetances.Shared.Models
 {
-    public class VehiuloDetalle
+    public class VehiculosDetalle
     {
         [Key]
         public int DetalleId { get; set; }
