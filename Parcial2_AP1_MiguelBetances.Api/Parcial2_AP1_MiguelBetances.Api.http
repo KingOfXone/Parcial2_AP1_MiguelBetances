@@ -1,0 +1,6 @@
+@Parcial2_AP1_MiguelBetances.Api_HostAddress = http://localhost:5067
+
+GET {{Parcial2_AP1_MiguelBetances.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
