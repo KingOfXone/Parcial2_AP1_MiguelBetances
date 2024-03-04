@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Parcial2_AP1_MiguelBetances.Shared.Models
 {
-    internal class Vehiculos
+    public class Vehiculos
     {
         [Key]
         public int VehiculoId { get; set; }
