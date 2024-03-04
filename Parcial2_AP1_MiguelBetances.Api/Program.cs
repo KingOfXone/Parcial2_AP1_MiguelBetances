@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Parcial2_AP1_MiguelBetances.Api.DAL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,6 +10,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var ConStr = builder.Configuration.GetConnectionString("ConStr");
+builder.Services.AddDbContextFactory<Contexto>(op => op.UseSqlite(ConStr));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -15,6 +21,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
 app.UseHttpsRedirection();
 
