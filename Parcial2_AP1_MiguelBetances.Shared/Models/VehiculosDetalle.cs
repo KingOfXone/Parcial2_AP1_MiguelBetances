@@ -18,7 +18,7 @@ namespace Parcial2_AP1_MiguelBetances.Shared.Models
 
 
         [Required(ErrorMessage = "Debes de insertar el Id del accesorio")]
-        public int AccesorrioId { get; set; }
+        public int AccesorioId { get; set; }
 
 
         [Required(ErrorMessage = "Debes de insertar un valor")]

@@ -12,20 +12,16 @@ namespace Parcial2_AP1_MiguelBetances.Shared.Models
     {
         [Key]
         public int VehiculoId { get; set; }
+        [Required(ErrorMessage = "Este campo es obligatorio.")]
+        public DateTime Fecha { get; set; } = DateTime.Now;
+        [Required(ErrorMessage = "Este campo es obligatorio.")]
+        public string? Descripcion { get; set; }
+        [Required(ErrorMessage = "Este campo es obligatorio.")]
+        public double Costo { get; set; }
 
-        [Required]
-        public DateTime Fecha { get; set; }
-
-        [Required(ErrorMessage = "Ingrese una descripción")]
-        public string? Descripción { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "El Costo debe ser mayor que cero.")]
-        public decimal Costo { get; set; }
-
-        [Range(1, int.MaxValue, ErrorMessage = "El Gasto debe ser mayor que cero.")]
-        public decimal Gastos { get; set; }
-
+        [Required(ErrorMessage = "Este campo es obligatorio.")]
+        public double Gastos { get; set; }
         [ForeignKey("VehiculoId")]
-        public ICollection<VehiculosDetalle> vehiculosDetalle { get; set; } = new List<VehiculosDetalle>();
+        public ICollection<VehiculosDetalle> VehiculosDetalle { get; set; } = new List<VehiculosDetalle>();
     }
 }
