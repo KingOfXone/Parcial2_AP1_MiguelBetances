@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34622.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parcial2_AP1_MiguelBetances", "Parcial2_AP1_MiguelBetances\Parcial2_AP1_MiguelBetances.csproj", "{AFAB3D1A-7D6F-4132-B117-52D49E675B1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parcial2_AP1_MiguelBetances", "Parcial2_AP1_MiguelBetances\Parcial2_AP1_MiguelBetances.csproj", "{AFAB3D1A-7D6F-4132-B117-52D49E675B1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parcial2_AP1_MiguelBetances.Api", "Parcial2_AP1_MiguelBetances.Api\Parcial2_AP1_MiguelBetances.Api.csproj", "{067E6DEA-8ECB-40B8-A2CB-68FCACE2E42B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parcial2_AP1_MiguelBetances.Api", "Parcial2_AP1_MiguelBetances.Api\Parcial2_AP1_MiguelBetances.Api.csproj", "{067E6DEA-8ECB-40B8-A2CB-68FCACE2E42B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Parcial2_AP1_MiguelBetances.Shared", "Parcial2_AP1_MiguelBetances.Shared\Parcial2_AP1_MiguelBetances.Shared.csproj", "{9C29ECD0-D828-47CC-A3EA-26FD1D367BDE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parcial2_AP1_MiguelBetances.Shared", "Parcial2_AP1_MiguelBetances.Shared\Parcial2_AP1_MiguelBetances.Shared.csproj", "{9C29ECD0-D828-47CC-A3EA-26FD1D367BDE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

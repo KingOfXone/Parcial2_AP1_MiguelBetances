@@ -15,8 +15,4 @@
     <ProjectReference Include="..\Parcial2_AP1_MiguelBetances.Shared\Parcial2_AP1_MiguelBetances.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\Registro\" />
-  </ItemGroup>
-
 </Project>
