@@ -20,5 +20,6 @@ namespace Parcial2_AP1_MiguelBetances.Api.DAL
             new Accesorios() { AccesorioId = 5, Descripción = "Aros de Lujo"},
     });
         }
+        public DbSet<Parcial2_AP1_MiguelBetances.Shared.Models.VehiculosDetalle> VehiculosDetalle { get; set; } = default!;
     }
 }
