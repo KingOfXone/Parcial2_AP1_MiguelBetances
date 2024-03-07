@@ -32,7 +32,14 @@ namespace Parcial2_AP1_MiguelBetances.Api.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Vehiculos>> GetVehiculos(int id)
         {
-            var vehiculos = await _context.Vehiculos.FindAsync(id);
+            if (_context.Vehiculos == null)
+            {
+                return NotFound();
+            }
+            var vehiculos = await _context.Vehiculos
+                .Include(c => c.VehiculosDetalle)
+                .Where(c => c.VehiculoId == id)
+                .FirstOrDefaultAsync();
 
             if (vehiculos == null)
             {
@@ -41,6 +48,9 @@ namespace Parcial2_AP1_MiguelBetances.Api.Controllers
 
             return vehiculos;
         }
+
+
+
 
         // PUT: api/Vehiculos/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -52,7 +62,41 @@ namespace Parcial2_AP1_MiguelBetances.Api.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(vehiculos).State = EntityState.Modified;
+            var existingVehiculo = await _context.Vehiculos
+                .Include(v => v.VehiculosDetalle)
+                .FirstOrDefaultAsync(v => v.VehiculoId == id);
+
+            if (existingVehiculo == null)
+            {
+                return NotFound();
+            }
+
+            // Actualizar las propiedades principales del vehículo
+            _context.Entry(existingVehiculo).CurrentValues.SetValues(vehiculos);
+
+            // Eliminar detalles que ya no están presentes en la versión actualizada
+            foreach (var existingDetalle in existingVehiculo.VehiculosDetalle.ToList())
+            {
+                if (!vehiculos.VehiculosDetalle.Any(d => d.Id == existingDetalle.Id))
+                    _context.VehiculosDetalle.Remove(existingDetalle);
+            }
+
+            // Actualizar y agregar detalles
+            foreach (var updatedDetalle in vehiculos.VehiculosDetalle)
+            {
+                var existingDetalle = existingVehiculo.VehiculosDetalle
+                    .FirstOrDefault(d => d.Id == updatedDetalle.Id);
+
+                if (existingDetalle != null)
+                    // Actualizar el detalle existente
+                    _context.Entry(existingDetalle).CurrentValues.SetValues(updatedDetalle);
+                else
+                {
+                    // Configurar la clave foránea y agregar un nuevo detalle
+                    updatedDetalle.VehiculosId = id;
+                    existingVehiculo.VehiculosDetalle.Add(updatedDetalle);
+                }
+            }
 
             try
             {
@@ -88,16 +132,32 @@ namespace Parcial2_AP1_MiguelBetances.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteVehiculos(int id)
         {
-            var vehiculos = await _context.Vehiculos.FindAsync(id);
-            if (vehiculos == null)
+            try
             {
-                return NotFound();
+                var vehiculos = await _context.Vehiculos
+                    .Include(v => v.VehiculosDetalle)
+                    .FirstOrDefaultAsync(v => v.VehiculoId == id);
+
+                if (vehiculos == null)
+                {
+                    return NotFound();
+                }
+
+                // Eliminar los detalles del vehículo
+                _context.VehiculosDetalle.RemoveRange(vehiculos.VehiculosDetalle);
+
+                // Eliminar el vehículo
+                _context.Vehiculos.Remove(vehiculos);
+
+                await _context.SaveChangesAsync();
+
+                return NoContent();
             }
-
-            _context.Vehiculos.Remove(vehiculos);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                // Aquí puedes registrar la excepción
+                return StatusCode(500, $"Internal server error: {ex}");
+            }
         }
 
         private bool VehiculosExists(int id)
