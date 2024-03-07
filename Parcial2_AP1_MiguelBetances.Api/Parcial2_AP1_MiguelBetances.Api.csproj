@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Parcial2_AP1_MiguelBetances.Shared\Parcial2_AP1_MiguelBetances.Shared.csproj" />
+    <ProjectReference Include="..\Parcial2_AP1_MiguelBetances\Parcial2_AP1_MiguelBetances.csproj" />
   </ItemGroup>
 
   <ItemGroup>
