@@ -1,0 +1,73 @@
+﻿@page "/Details"
+@page "/Details/{VehiculoId:int}"
+@inject HttpClient httpClient
+
+<PageTitle>Detalles del Vehículo</PageTitle>
+
+<div class="card-header">
+    <div class="card-header text-center" style="color: #FFFFFF; background-color:brown">
+        <h3>Información del vehículo</h3>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <p>-VehiculoID: @vehiculo.VehiculoId</p>
+                <p>-Fecha: @vehiculo.Fecha.ToString("dd/MM/yyyy")</p>
+                <p>-Descripción: @vehiculo.Descripcion</p>
+                <p>-Costo: @vehiculo.Costo</p>
+                <p>-Gastos: @vehiculo.Gastos</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-header text-center" style="color: #FFFFFF; background-color:brown">
+        <h3>Detalles del vehículo</h3>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Nombre de Accesorio</th>
+                <th>Valor</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detalle in vehiculo.VehiculosDetalle)
+            {
+                var accesorio = listaAccesorios.FirstOrDefault(a => a.AccesorioId == detalle.AccesorioId);
+                <tr>
+                    <td>@accesorio?.Descripción</td>
+                    <td>@detalle.Valor</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="card-footer">
+        <a href="/Index" class="btn btn-secondary bi bi-arrow-left-square-fill ms-auto">Volver</a>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public int VehiculoId { get; set; }
+
+    public Vehiculos vehiculo { get; set; } = new Vehiculos();
+    public List<Accesorios> listaAccesorios { get; set; } = new List<Accesorios>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (VehiculoId > 0)
+        {
+            await CargarDatos();
+        }
+    }
+
+    private async Task CargarDatos()
+    {
+        var vehiculoEncontrado = await httpClient.GetFromJsonAsync<Vehiculos>($"api/Vehiculos/{VehiculoId}");
+        if (vehiculoEncontrado != null)
+        {
+            vehiculo = vehiculoEncontrado;
+            listaAccesorios = (await httpClient.GetFromJsonAsync<List<Accesorios>>("Api/Accesorios"))!;
+        }
+    }
+}
