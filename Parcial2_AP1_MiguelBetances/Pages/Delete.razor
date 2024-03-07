@@ -1,0 +1,96 @@
+﻿@page "/Delete"
+@page "/Delete/{VehiculoId:int}"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+
+<PageTitle>Eliminar Vehículo</PageTitle>
+
+<div class="card shadow">
+    <div class="card-header text-center" style="color: #FFFFFF; background-color:brown">
+        <h3>Eliminar Vehículo</h3>
+    </div>
+    <div class="card-header">
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <p>-VehiculoID: @vehiculo.VehiculoId</p>
+                <p>-Fecha: @vehiculo.Fecha.ToString("dd/MM/yyyy")</p>
+                <p>-Descripción: @vehiculo.Descripcion</p>
+                <p>-Costo: @vehiculo.Costo</p>
+                <p>-Gastos: @vehiculo.Gastos</p>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <div class="card-header text-center" style="color: #FFFFFF; background-color:brown">
+            <h3 class="text-center">Accesorios</h3>
+        </div>
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>Nombre de Accesorio</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var detalle in vehiculo.VehiculosDetalle)
+                {
+                    var accesorio = listaAccesorios.FirstOrDefault(a => a.AccesorioId == detalle.AccesorioId);
+                    <tr>
+                        <td>@ObtenerDescripcionAccesorio(detalle.AccesorioId)</td>
+                        <td>@detalle.Valor</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <h3 class="text-danger">¿Estás seguro de eliminar este veh&iacute;culo?</h3>
+        <div class="card-footer">
+            <a href="/Index" class="btn btn-secondary bi bi-arrow-left-square-fill ms-auto">Volver</a>
+            <button type="button" class="btn btn-danger bi bi-trash-fill" @onclick="Eliminar">Eliminar</button>
+        </div>
+
+    </div>
+</div>
+
+@code {
+
+    [Parameter]
+    public int VehiculoId { get; set; }
+    public Vehiculos vehiculo { get; set; } = new Vehiculos();
+    public List<Accesorios> listaAccesorios { get; set; } = new List<Accesorios>();
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        listaAccesorios = (await httpClient.GetFromJsonAsync<List<Accesorios>>("Api/Accesorios"))!;
+        if (VehiculoId > 0)
+        {
+            var vehiculoEncontrado = await httpClient.GetFromJsonAsync<Vehiculos>($"api/Vehiculos/{VehiculoId}");
+            if (vehiculoEncontrado != null)
+            {
+                vehiculo = vehiculoEncontrado;
+            }
+        }
+    }
+
+    public async Task Eliminar()
+    {
+        var eliminado = await httpClient.DeleteAsync($"api/Vehiculos/{vehiculo.VehiculoId}");
+        if (eliminado.IsSuccessStatusCode)
+        {
+            vehiculo = new Vehiculos();
+        }
+
+        navigationManager.NavigateTo("/Index");
+    }
+
+    public string ObtenerDescripcionAccesorio(int accesorioId)
+    {
+        var accesorio = listaAccesorios.FirstOrDefault(a => a.AccesorioId == accesorioId);
+        return accesorio?.Descripción ?? "No encontrado";
+    }
+
+}
