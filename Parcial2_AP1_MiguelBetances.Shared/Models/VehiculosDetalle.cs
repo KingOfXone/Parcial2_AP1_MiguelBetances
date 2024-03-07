@@ -10,10 +10,8 @@ namespace Parcial2_AP1_MiguelBetances.Shared.Models
     public class VehiculosDetalle
     {
         [Key]
-        public int DetalleId { get; set; }
+        public int Id { get; set; }
 
-
-        [Required(ErrorMessage = "Debes de insertar el Id del vehiculo")]
         public int VehiculosId { get; set; }
 
 
@@ -22,6 +20,6 @@ namespace Parcial2_AP1_MiguelBetances.Shared.Models
 
 
         [Required(ErrorMessage = "Debes de insertar un valor")]
-        public decimal Valor { get; set; }
+        public double Valor { get; set; }
     }
 }
