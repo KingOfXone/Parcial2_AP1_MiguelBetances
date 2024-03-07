@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Parcial2_AP1_MiguelBetances.Api.DAL;
 
@@ -10,9 +11,11 @@ using Parcial2_AP1_MiguelBetances.Api.DAL;
 namespace Parcial2_AP1_MiguelBetances.Api.Migrations
 {
     [DbContext(typeof(Contexto))]
-    partial class ContextoModelSnapshot : ModelSnapshot
+    [Migration("20240305030708_Modifiando_VehiulosDetalle")]
+    partial class Modifiando_VehiulosDetalle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.2");
@@ -85,7 +88,7 @@ namespace Parcial2_AP1_MiguelBetances.Api.Migrations
 
             modelBuilder.Entity("Parcial2_AP1_MiguelBetances.Shared.Models.VehiculosDetalle", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DetalleId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -101,7 +104,7 @@ namespace Parcial2_AP1_MiguelBetances.Api.Migrations
                     b.Property<int>("VehiculosId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("DetalleId");
 
                     b.HasIndex("VehiculoId");
 
