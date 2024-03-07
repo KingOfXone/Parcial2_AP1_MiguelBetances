@@ -11,8 +11,8 @@ using Parcial2_AP1_MiguelBetances.Api.DAL;
 namespace Parcial2_AP1_MiguelBetances.Api.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240305030708_Modifiando_VehiulosDetalle")]
-    partial class Modifiando_VehiulosDetalle
+    [Migration("20240307042555_ArreglandoDetalle")]
+    partial class ArreglandoDetalle
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -88,7 +88,7 @@ namespace Parcial2_AP1_MiguelBetances.Api.Migrations
 
             modelBuilder.Entity("Parcial2_AP1_MiguelBetances.Shared.Models.VehiculosDetalle", b =>
                 {
-                    b.Property<int>("DetalleId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
@@ -104,7 +104,7 @@ namespace Parcial2_AP1_MiguelBetances.Api.Migrations
                     b.Property<int>("VehiculosId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("DetalleId");
+                    b.HasKey("Id");
 
                     b.HasIndex("VehiculoId");
 

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Parcial2_AP1_MiguelBetances.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class ArreglandoDetalle : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,9 +33,9 @@ namespace Parcial2_AP1_MiguelBetances.Api.Migrations
                     VehiculoId = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Fecha = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Descripción = table.Column<string>(type: "TEXT", nullable: false),
-                    Costo = table.Column<decimal>(type: "TEXT", nullable: false),
-                    Gastos = table.Column<decimal>(type: "TEXT", nullable: false)
+                    Descripcion = table.Column<string>(type: "TEXT", nullable: false),
+                    Costo = table.Column<double>(type: "REAL", nullable: false),
+                    Gastos = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,16 +46,16 @@ namespace Parcial2_AP1_MiguelBetances.Api.Migrations
                 name: "VehiculosDetalle",
                 columns: table => new
                 {
-                    DetalleId = table.Column<int>(type: "INTEGER", nullable: false)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     VehiculosId = table.Column<int>(type: "INTEGER", nullable: false),
-                    AccesorrioId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Valor = table.Column<decimal>(type: "TEXT", nullable: false),
+                    AccesorioId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Valor = table.Column<double>(type: "REAL", nullable: false),
                     VehiculoId = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_VehiculosDetalle", x => x.DetalleId);
+                    table.PrimaryKey("PK_VehiculosDetalle", x => x.Id);
                     table.ForeignKey(
                         name: "FK_VehiculosDetalle_Vehiculos_VehiculoId",
                         column: x => x.VehiculoId,
