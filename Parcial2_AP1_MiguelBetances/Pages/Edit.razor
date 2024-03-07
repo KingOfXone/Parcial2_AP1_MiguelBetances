@@ -1,5 +1,5 @@
-﻿@page "/Create"
-@page "/Create/{VehiculoId:int}"
+﻿@page "/Edit"
+@page "/Edit/{VehiculoId:int}"
 @inject HttpClient httpClient
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
@@ -8,7 +8,7 @@
     <DataAnnotationsValidator />
     <div class="card">
         <div class="card-header text-center" style="color: #FFFFFF; background-color:brown">
-            <h1>Registro Vehiculos</h1>
+            <h1>Editar Vehiculo</h1>
         </div>
         <div class="card-body">
             <div class="row">
@@ -42,7 +42,7 @@
 
 
             <div class="mt-5">
-                <div class="card-header text-center" style="color: #FFFFFF; background-color:brown">
+                <div class="card-header text-center" style="color: #FFFFFF; background-color:peachpuff">
                     <h3 class="text-center">Accesorios</h3>
                 </div>
                 <div class="row">
@@ -184,36 +184,15 @@
     }
     public async Task Guardar()
     {
-        var ExisteId = listaVehiculos.Any(v => v.VehiculoId == vehiculos.VehiculoId);
-        if (ExisteId)
-        {
-            MensajeError = "El ID Existe Actualmente.";
-            await JSRuntime.InvokeVoidAsync("hideMessage", 3000);
-            return;
-        }
-
-        var existeDescripcion = listaVehiculos.Any(v => v.Descripcion.Equals(vehiculos.Descripcion, StringComparison.OrdinalIgnoreCase));
-        if (existeDescripcion)
-        {
-            MensajeError = "La descripción Existe Actualmente.";
-            await JSRuntime.InvokeVoidAsync("hideMessage", 3000);
-            return;
-        }
-        if (Detalles.AccesorioId != 0 && Detalles.Valor != 0)
-        {
-            vehiculos.VehiculosDetalle.Add(Detalles);
-
-        }
-        var response = await httpClient.PostAsJsonAsync($"api/Vehiculos", vehiculos);
+        var response = await httpClient.PutAsJsonAsync("api/Vehiculos/" + vehiculos.VehiculoId, vehiculos);
         if (!response.IsSuccessStatusCode)
         {
             return;
         }
 
         Volver();
-
-
     }
+
     public void Nuevo()
     {
         MensajeError = "";

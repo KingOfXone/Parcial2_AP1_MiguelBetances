@@ -11,8 +11,8 @@ using Parcial2_AP1_MiguelBetances.Api.DAL;
 namespace Parcial2_AP1_MiguelBetances.Api.Migrations
 {
     [DbContext(typeof(Contexto))]
-    [Migration("20240305000537_Inicial")]
-    partial class Inicial
+    [Migration("20240307042555_ArreglandoDetalle")]
+    partial class ArreglandoDetalle
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,18 +68,18 @@ namespace Parcial2_AP1_MiguelBetances.Api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Costo")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("Costo")
+                        .HasColumnType("REAL");
 
-                    b.Property<string>("Descripción")
+                    b.Property<string>("Descripcion")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Fecha")
                         .HasColumnType("TEXT");
 
-                    b.Property<decimal>("Gastos")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("Gastos")
+                        .HasColumnType("REAL");
 
                     b.HasKey("VehiculoId");
 
@@ -88,15 +88,15 @@ namespace Parcial2_AP1_MiguelBetances.Api.Migrations
 
             modelBuilder.Entity("Parcial2_AP1_MiguelBetances.Shared.Models.VehiculosDetalle", b =>
                 {
-                    b.Property<int>("DetalleId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("AccesorrioId")
+                    b.Property<int>("AccesorioId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<decimal>("Valor")
-                        .HasColumnType("TEXT");
+                    b.Property<double>("Valor")
+                        .HasColumnType("REAL");
 
                     b.Property<int?>("VehiculoId")
                         .HasColumnType("INTEGER");
@@ -104,7 +104,7 @@ namespace Parcial2_AP1_MiguelBetances.Api.Migrations
                     b.Property<int>("VehiculosId")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("DetalleId");
+                    b.HasKey("Id");
 
                     b.HasIndex("VehiculoId");
 
@@ -114,13 +114,13 @@ namespace Parcial2_AP1_MiguelBetances.Api.Migrations
             modelBuilder.Entity("Parcial2_AP1_MiguelBetances.Shared.Models.VehiculosDetalle", b =>
                 {
                     b.HasOne("Parcial2_AP1_MiguelBetances.Shared.Models.Vehiculos", null)
-                        .WithMany("vehiculosDetalle")
+                        .WithMany("VehiculosDetalle")
                         .HasForeignKey("VehiculoId");
                 });
 
             modelBuilder.Entity("Parcial2_AP1_MiguelBetances.Shared.Models.Vehiculos", b =>
                 {
-                    b.Navigation("vehiculosDetalle");
+                    b.Navigation("VehiculosDetalle");
                 });
 #pragma warning restore 612, 618
         }

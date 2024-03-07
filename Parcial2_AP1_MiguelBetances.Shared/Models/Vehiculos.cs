@@ -21,6 +21,7 @@ namespace Parcial2_AP1_MiguelBetances.Shared.Models
 
         [Required(ErrorMessage = "Este campo es obligatorio.")]
         public double Gastos { get; set; }
+
         [ForeignKey("VehiculoId")]
         public ICollection<VehiculosDetalle> VehiculosDetalle { get; set; } = new List<VehiculosDetalle>();
     }

@@ -1,0 +1,144 @@
+﻿@page "/Index"
+@inject HttpClient httpClient
+@inject NavigationManager navigationManager
+@inject IJSRuntime js
+
+<div class="card shadow-lg">
+    <div class="card-header text-center" style="color: #FFFFFF; background-color:brown">
+        <h3>Vehículos</h3>
+    </div>
+
+    <div class="card-body">
+
+        <div class="input-group-text">
+
+            <label class="form-control-label col-1">Desde:</label>
+            <div class="col-3">
+                <input class="form-control" type="date" @bind="Desde" />
+            </div>
+
+            <label class="form-control-label col-1">Hasta:</label>
+            <div class="col-3">
+                <input class="form-control" type="date" @bind="Hasta" />
+            </div>
+
+            <div class="col-5">
+                <button type="button" @onclick="Buscar" class="btn btn-primary  ">
+                    <i class="bi bi-search" />
+                    <br /> Buscar
+                </button>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-3">
+                <label>Filtrar Por</label>
+                <InputSelect @bind-Value="Opcion" class="form-select">
+                    <option value="0" selected disabled>Seleccione</option>
+                    <option value="1">VehiculoId</option>
+                    <option value="2">Descripción</option>
+                </InputSelect>
+            </div>
+
+            @if (Opcion == 1)
+            {
+                <div class="col-3">
+                    <label>Id</label>
+                    <div class="input-group">
+                        <InputNumber @bind-Value="vehiculos.VehiculoId" class="form-control"></InputNumber>
+                    </div>
+                </div>
+            }
+            else if (Opcion == 2)
+            {
+                <div class="col-3">
+                    <label>Descripción</label>
+                    <div class="input-group">
+                        <InputText @bind-Value="vehiculos.Descripcion" class="form-control"></InputText>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="mb-3 d-flex justify-content-end">
+            <a href="Create" class="btn btn-success bi-plus"> Agregar Veh&iacute;culo</a>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>VehiculoId</th>
+                    <th>Fecha</th>
+                    <th>Descripción</th>
+                    <th>Costo</th>
+                    <th>Gastos</th>
+                    <th>Ver</th>
+                    <th>Editar</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var vehiculo in listaVehiculos)
+                {
+                    <tr>
+                        <td>@vehiculo.VehiculoId</td>
+                        <td>@vehiculo.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@vehiculo.Descripcion</td>
+                        <td>@vehiculo.Costo</td>
+                        <td>@vehiculo.Gastos</td>
+                        <td>
+                            <a href="/Details/@vehiculo.VehiculoId" class="btn btn-outline-primary bi bi-eye"></a>
+                        </td>
+                        <td>
+                            <a href="/Edit/@vehiculo.VehiculoId" class="btn btn-outline-secondary bi bi-pencil"></a>
+                        </td>
+                        <td>
+                            <a href="/Delete/@vehiculo.VehiculoId" class="btn btn-outline-danger bi bi-trash-fill"></a>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    public List<Vehiculos> listaVehiculos { get; set; } = new List<Vehiculos>();
+    public List<Accesorios> listaAccesorios { get; set; } = new List<Accesorios>();
+    public Vehiculos vehiculos { get; set; } = new Vehiculos();
+    public int Opcion { get; set; }
+
+    public DateTime Desde { get; set; }
+    public DateTime Hasta { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        Desde = DateTime.Now.AddMonths(-1);
+        Hasta = DateTime.Now;
+        listaAccesorios = (await httpClient.GetFromJsonAsync<List<Accesorios>>("api/Accesorios"))!;
+        await Buscar();
+    }
+
+    public async Task Buscar()
+    {
+        Hasta = new DateTime(Hasta.Year, Hasta.Month, Hasta.Day, 23, 59, 59);
+        if (Opcion == 1 && vehiculos.VehiculoId > 0)
+        {
+            listaVehiculos = (await httpClient.GetFromJsonAsync<List<Vehiculos>>($"api/Vehiculos"))!.Where(v => v.VehiculoId == vehiculos.VehiculoId && v.Fecha >= Desde && v.Fecha <= Hasta).ToList();
+            StateHasChanged();
+        }
+        else if (Opcion == 2 && !string.IsNullOrEmpty(vehiculos.Descripcion))
+        {
+            listaVehiculos = (await httpClient.GetFromJsonAsync<List<Vehiculos>>($"api/Vehiculos"))!.Where(v => v.Descripcion!.ToLower() == vehiculos.Descripcion.ToLower() && v.Fecha >= Desde && v.Fecha <= Hasta).ToList();
+            StateHasChanged();
+        }
+        else
+        {
+            listaVehiculos = (await httpClient.GetFromJsonAsync<List<Vehiculos>>($"api/Vehiculos"))!.Where(v => v.Fecha >= Desde && v.Fecha <= Hasta).ToList();
+            StateHasChanged();
+        }
+    }
+}
